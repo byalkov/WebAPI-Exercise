@@ -19,7 +19,11 @@ namespace Strata_WebAPI_Exercise.Services
             var customer = _customerService.GetCustomer(customerId);
             var order = new Order()
             {
-            
+                CustomerId = customer.CustomerId,
+                DeliveryAddress = customer.Address,
+                DeliveryCost = 0,
+                Status = Status.AwaitingDespatch,
+
             };
 
             throw new NotImplementedException();
@@ -86,14 +90,14 @@ namespace Strata_WebAPI_Exercise.Services
             {
                 messageBody += item.Product.Name + " x" + item.Quantity + " = £" + item.Product.Price + "\n";
             }
-            messageBody += "Total " + 
-                (order.Customer.Loyalty.DicountPercentage.HasValue?"(includes "+ order.Customer.Loyalty.DicountPercentage.Value+"% "+ order.Customer.Loyalty.Name + " discount) = £"
+            messageBody += "Total " +
+                (order.Customer.Loyalty.DicountPercentage.HasValue ? "(includes " + order.Customer.Loyalty.DicountPercentage.Value + "% " + order.Customer.Loyalty.Name + " discount) = £"
                 : string.Empty) + order.TotalCost;
 
-            var message = new Message() {
+            var message = new Message()
+            {
                 OrderId = order.OrderId,
-                MessageBody = messageBody,
-                DateCreated = DateTime.Now
+                MessageBody = messageBody                
             };
 
             _repositoryService.SaveMessage(message);

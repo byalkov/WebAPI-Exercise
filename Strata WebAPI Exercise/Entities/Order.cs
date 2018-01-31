@@ -34,7 +34,7 @@ namespace Strata_WebAPI_Exercise.Entities
             }
         }
         public Status Status { get; set; }
-        public DateTime DateCreated { get; set; }
+        public DateTime DateCreated { get; set; } = DateTime.Now;
         public DateTime? DateUpdated { get; set; }
         public List<LineItem> OrderLineItems { get; set; }
         public virtual Customer Customer { get; set; }

@@ -10,7 +10,7 @@ namespace Strata_WebAPI_Exercise.Entities
         public int MessageId { get; set; }
         public int OrderId { get; set; }
         public string MessageBody { get; set; }
-        public DateTime DateCreated { get; set; }
+        public DateTime DateCreated { get; set; } = DateTime.Now;
         public DateTime? DateUpdated { get; set; }
         public DateTime? DateMessageSent { get; set; }
 

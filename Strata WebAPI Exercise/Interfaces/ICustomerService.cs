@@ -8,5 +8,6 @@ namespace Strata_WebAPI_Exercise.Interfaces
         Customer GetCustomer(int id);
         int? GetClaimsUserId(ClaimsPrincipal claimsPrincipal);
         void UpdateBalance(int userId, double v);
+        void UpdateCustomer(int customerId, Order order);
     }
 }

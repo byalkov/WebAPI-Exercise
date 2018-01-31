@@ -78,7 +78,7 @@ namespace Strata_WebAPI_Exercise.Services
             if (customer.AccountBalance - shoppingCart.TotalCost > customer.LoyaltyNegativeBalance)
             {
                 var order = _orderService.CreateOrder(customerId, shoppingCart);
-                _customerService.UpdateBalance(customerId, customer.AccountBalance - shoppingCart.TotalCost);
+                _customerService.UpdateCustomer(customerId, order);
                 EmptyShoppingCartOnPurchase(shoppingCart);
                 _orderService.SendOrderMessage(order);
             }

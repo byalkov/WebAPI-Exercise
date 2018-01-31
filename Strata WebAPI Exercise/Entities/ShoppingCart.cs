@@ -13,8 +13,8 @@ namespace Strata_WebAPI_Exercise.Entities
 
         public virtual Customer Customer { get; set; }
 
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
+        public DateTime DateCreated { get; set; } = DateTime.Now;
+        public DateTime? DateUpdated { get; set; }
 
         // Use the live values for price and loyalty discount
         public double TotalCost

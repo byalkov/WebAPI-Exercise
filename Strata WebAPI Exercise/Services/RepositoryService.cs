@@ -45,7 +45,7 @@ namespace Strata_WebAPI_Exercise.Services
             shoppingCarts = new List<ShoppingCart>() {
                 new ShoppingCart()
                 {
-                    Customer = GetCustomerRepository()[0], CustomerId=1, ShoppingCartId=1, DateCreated = DateTime.Now,
+                    Customer = GetCustomerRepository()[0], CustomerId=1, ShoppingCartId=1, DateCreated = DateTime.Now.AddMonths(-1),
                     Items = new List<LineItem>(){
                         new LineItem(){Product = GetProductRepository()[0], ProductId=1, Quantity=1 }
                     }
@@ -78,9 +78,9 @@ namespace Strata_WebAPI_Exercise.Services
         {
             var products = new List<Product>()
             {
-                new Product(){ProductId=1, Name="Product1", IsActive=true, Price=60.10, DateCreated = DateTime.UtcNow },
-                new Product(){ProductId=2, Name="Product2", IsActive=true, Price=200, DateCreated = DateTime.UtcNow },
-                new Product(){ProductId=3, Name="Product3", IsActive=true, Price=99.99, DateCreated = DateTime.UtcNow },
+                new Product(){ProductId=1, Name="Product1", IsActive=true, Price=60.10 },
+                new Product(){ProductId=2, Name="Product2", IsActive=true, Price=200},
+                new Product(){ProductId=3, Name="Product3", IsActive=true, Price=99.99},
             };
             return products;
         }
