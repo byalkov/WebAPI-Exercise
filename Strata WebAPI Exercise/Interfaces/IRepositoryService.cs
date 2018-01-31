@@ -16,5 +16,6 @@ namespace Strata_WebAPI_Exercise.Interfaces
 
         void UpdateShoppingCartRepository(ShoppingCart shoppingCart);
         void UpdateCustomerRepository(Customer res);
+        void SaveMessage(Message message);
     }
 }

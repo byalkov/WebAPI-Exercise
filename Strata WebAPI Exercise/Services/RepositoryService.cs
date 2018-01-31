@@ -15,6 +15,7 @@ namespace Strata_WebAPI_Exercise.Services
         private static List<Customer> customers;
         private static List<Order> orders;
         private static List<ShoppingCart> shoppingCarts;
+        private static List<Message> messages;
         public RepositoryService()
         {
             customers = new List<Customer>()
@@ -25,18 +26,18 @@ namespace Strata_WebAPI_Exercise.Services
              };
 
             orders = new List<Order>() {
-                new Order(){    OrderId = 1, CustomerId = 1, Customer=GetCustomerRepository()[0], DeliveryAddress="", DiscountApplied = 0, Status = Status.Despatched,
-                    OrderLines = new List<OrderLineItem>()
+                new Order(){    OrderId = 1, CustomerId = 1, Customer=GetCustomerRepository()[0], DeliveryAddress="", Status = Status.Despatched,
+                    OrderLineItems = new List<LineItem>()
                     {
-                        new OrderLineItem() { ProductId= 1, Product=GetProductRepository()[0], PurchasePrice=50, Quantity=1 },
-                        new OrderLineItem() { ProductId= 2, Product=GetProductRepository()[1], PurchasePrice=200, Quantity=2 }
+                        new LineItem() { ProductId= 1, Product=GetProductRepository()[0], Quantity=1 },
+                        new LineItem() { ProductId= 2, Product=GetProductRepository()[1], Quantity=2 }
                     }
                 },
-                new Order(){    OrderId = 2, CustomerId = 1, Customer=GetCustomerRepository()[0], DeliveryAddress="", DiscountApplied = 0, Status = Status.AwaitingDespatch,
-                    OrderLines = new List<OrderLineItem>()
+                new Order(){    OrderId = 2, CustomerId = 1, Customer=GetCustomerRepository()[0], DeliveryAddress="", Status = Status.AwaitingDespatch,
+                    OrderLineItems = new List<LineItem>()
                     {
-                        new OrderLineItem() { ProductId= 1, Product=GetProductRepository()[0], PurchasePrice=50, Quantity=1 },
-                        new OrderLineItem() { ProductId= 2, Product=GetProductRepository()[1], PurchasePrice=200, Quantity=1 }
+                        new LineItem() { ProductId= 1, Product=GetProductRepository()[0], Quantity=1 },
+                        new LineItem() { ProductId= 2, Product=GetProductRepository()[1], Quantity=1 }
                     }
                 }
             };
@@ -60,7 +61,7 @@ namespace Strata_WebAPI_Exercise.Services
 
             var loyaltyList = new List<Loyalty>()
             {
-                new Loyalty(){ LoyaltyId =1, Name="Standard", DicountPercentage = 0, CategoryThreshold=0, ExtraCredit=0},
+                new Loyalty(){ LoyaltyId =1, Name="Standard", DicountPercentage = null, CategoryThreshold=0, ExtraCredit=0},
                 new Loyalty(){ LoyaltyId =2, Name="Silver", DicountPercentage = 0.02, CategoryThreshold=500, ExtraCredit=0},
                 new Loyalty(){ LoyaltyId =3, Name="Gold", DicountPercentage = 0.05, CategoryThreshold=1500, ExtraCredit=goldAccountCredit}
             };
@@ -104,6 +105,11 @@ namespace Strata_WebAPI_Exercise.Services
         {
             var index = customers.FindIndex(x => x.CustomerId == customer.CustomerId);
             customers[index] = customer;
+        }
+
+        public void SaveMessage(Message message)
+        {
+            messages.Add(message);
         }
     }
 }

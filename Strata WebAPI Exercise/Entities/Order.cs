@@ -12,12 +12,11 @@ namespace Strata_WebAPI_Exercise.Entities
 
         public string DeliveryAddress { get; set; }
         public double DeliveryCost { get; set; }
-        public double DiscountApplied { get; set; }
         public double TotalCost
         {
             get
             {
-                return DeliveryCost + (OrderLines.Sum(x => x.PurchasePrice * x.Quantity) * DiscountApplied);
+                return DeliveryCost + (OrderLineItems.Sum(x => x.Product.Price * x.Quantity) * (Customer.Loyalty.DicountPercentage ?? 1));
             }
         }
         public DateTime EstimatedDispatchDate
@@ -31,13 +30,13 @@ namespace Strata_WebAPI_Exercise.Entities
                         || DateCreated.AddDays(i).DayOfWeek == DayOfWeek.Sunday)
                         daysExtra++;
                 }
-                return DateCreated.AddDays(3+daysExtra);
+                return DateCreated.AddDays(3 + daysExtra);
             }
         }
         public Status Status { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime? DateUpdated { get; set; }
-        public List<OrderLineItem> OrderLines { get; set; }
+        public List<LineItem> OrderLineItems { get; set; }
         public virtual Customer Customer { get; set; }
     }
 }

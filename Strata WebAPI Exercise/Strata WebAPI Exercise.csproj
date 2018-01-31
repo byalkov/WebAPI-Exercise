@@ -150,7 +150,6 @@
     <Compile Include="Entities\Loyalty.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\Order.cs" />
-    <Compile Include="Entities\OrderLineItem.cs" />
     <Compile Include="Entities\ShoppingCart.cs" />
     <Compile Include="Entities\Customer.cs" />
     <Compile Include="Entities\LineItem.cs" />

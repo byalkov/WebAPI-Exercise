@@ -11,7 +11,7 @@ namespace Strata_WebAPI_Exercise.Entities
         // List of products and their quantity
         public List<LineItem> Items { get; set; }
 
-        public virtual Customer Customer{ get; set; }
+        public virtual Customer Customer { get; set; }
 
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
@@ -21,7 +21,7 @@ namespace Strata_WebAPI_Exercise.Entities
         {
             get
             {
-                return (Items.Sum(x => x.Product.Price * x.Quantity) * Customer.Loyalty.DicountPercentage);
+                return (Items.Sum(x => x.Product.Price * x.Quantity) * Customer.Loyalty.DicountPercentage ?? 1);
             }
         }
     }

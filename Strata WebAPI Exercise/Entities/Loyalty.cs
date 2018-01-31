@@ -6,7 +6,7 @@
 
         public string Name { get; set; }
 
-        public double DicountPercentage { get; set; }
+        public double? DicountPercentage { get; set; }
         // Amount spent in the last 12 months 
         public double CategoryThreshold { get; set; }
 

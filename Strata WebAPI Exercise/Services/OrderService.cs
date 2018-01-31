@@ -16,6 +16,12 @@ namespace Strata_WebAPI_Exercise.Services
 
         public Order CreateOrder(int customerId, ShoppingCart shoppingCart)
         {
+            var customer = _customerService.GetCustomer(customerId);
+            var order = new Order()
+            {
+            
+            };
+
             throw new NotImplementedException();
         }
 
@@ -67,9 +73,30 @@ namespace Strata_WebAPI_Exercise.Services
             return res.ToList();
         }
 
+        /// <summary>
+        /// Generate message from Order
+        /// Assume that the message needs to be stored in the db and it will be sent by a downstream service (out of scope) 
+        /// </summary>
+        /// <param name="order"></param>
         public void SendOrderMessage(Order order)
         {
-            throw new NotImplementedException();
+            var estimatedDispatchDate = order.EstimatedDispatchDate.ToString("dd/MM/yyyy");
+            var messageBody = "Order #{order.OrderId} - Estimated despatch {estimatedDispatchDate}\n";
+            foreach (var item in order.OrderLineItems)
+            {
+                messageBody += item.Product.Name + " x" + item.Quantity + " = £" + item.Product.Price + "\n";
+            }
+            messageBody += "Total " + 
+                (order.Customer.Loyalty.DicountPercentage.HasValue?"(includes "+ order.Customer.Loyalty.DicountPercentage.Value+"% "+ order.Customer.Loyalty.Name + " discount) = £"
+                : string.Empty) + order.TotalCost;
+
+            var message = new Message() {
+                OrderId = order.OrderId,
+                MessageBody = messageBody,
+                DateCreated = DateTime.Now
+            };
+
+            _repositoryService.SaveMessage(message);
         }
     }
 }
