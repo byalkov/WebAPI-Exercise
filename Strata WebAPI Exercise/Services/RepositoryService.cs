@@ -93,6 +93,7 @@ namespace Strata_WebAPI_Exercise.Services
         public void UpdateShoppingCartRepository(ShoppingCart shoppingCart)
         {
             var index = shoppingCarts.FindIndex(x => x.ShoppingCartId == shoppingCart.ShoppingCartId);
+            if (index < 0) throw new KeyNotFoundException();
             shoppingCarts[index] = shoppingCart;
         }
 
