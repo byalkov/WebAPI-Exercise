@@ -53,20 +53,21 @@ namespace Strata_WebAPI_Exercise.Controllers
 
             if (!userId.HasValue)
             {
-                return BadRequest();
+                return BadRequest("Can't identify client, can't proceed with purchase.");
             }
+            try
+            {
+                var shoppingCart = _shoppingCartService.GetShoppingCart(userId.Value);
 
-            var shoppingCart = _shoppingCartService.GetShoppingCart(userId.Value);
+                shoppingCart = _shoppingCartService.UpdateProduct(shoppingCart.ShoppingCartId, productId, quantity);
 
-            // If we can't find the shopping basket the request is not valid
-            if (shoppingCart == null) return BadRequest();
-
-            shoppingCart = _shoppingCartService.UpdateProduct(shoppingCart.ShoppingCartId, productId, quantity);
-
-            //if the service returns null either the shopping cart or product were not found
-            if (shoppingCart == null) return NotFound();
-
-            return Ok(shoppingCart);
+                return Ok(shoppingCart);
+            }
+            catch (Exception ex)
+            {
+                // return the error
+                return InternalServerError(ex.InnerException);
+            }
         }
 
         [HttpPost]
@@ -77,24 +78,23 @@ namespace Strata_WebAPI_Exercise.Controllers
 
             if (!userId.HasValue)
             {
-                return BadRequest();
+                return BadRequest("Can't identify client, can't proceed with purchase.");
             }
+            try
+            {
+                var shoppingCart = _shoppingCartService.GetShoppingCart(userId.Value);
+                // If the customer doesn't have sufficient balance we can't process purchase
+                if (!_shoppingCartService.CanUserBuyShoppingCart(shoppingCart.ShoppingCartId, userId.Value))
+                    return BadRequest("Insufficient account balance, can't proceed with purchase.");
 
-            var shoppingCart = _shoppingCartService.GetShoppingCart(userId.Value);
-
-            // If we can't find the shopping basket the request is not valid
-            if (shoppingCart == null) return BadRequest();
-            
-            // If the customer doesn't have sufficient balance we can't process purchase
-            if (!_shoppingCartService.CanUserBuyShoppingCart(shoppingCart.ShoppingCartId, userId.Value))
-                return BadRequest();
-
-            shoppingCart = _shoppingCartService.BuyShoppingCart(shoppingCart.ShoppingCartId, userId.Value);
-
-            // Something went wrong
-            if (shoppingCart == null) return InternalServerError();
-
-            return Ok(shoppingCart);
+                shoppingCart = _shoppingCartService.BuyShoppingCart(shoppingCart.ShoppingCartId, userId.Value);
+                return Ok(shoppingCart);
+            }
+            catch (Exception ex)
+            {
+                // return the error
+                return InternalServerError(ex.InnerException);
+            }
         }
     }
 }

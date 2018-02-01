@@ -14,8 +14,13 @@ namespace Strata_WebAPI_Exercise.Interfaces
         List<ShoppingCart> GetShoppingCartRepository();
         List<Order> GetOrdersRepository();
 
+        ShoppingCart GetShoppingCart(int shoppingCartId);
+        Customer GetCustomer(int id);
+        Product GetProduct(int productId);
+
         void UpdateShoppingCartRepository(ShoppingCart shoppingCart);
         void UpdateCustomerRepository(Customer res);
         void SaveMessage(Message message);
+
     }
 }

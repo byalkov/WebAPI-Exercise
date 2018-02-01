@@ -35,57 +35,75 @@ namespace Strata_WebAPI_Exercise.Services
         /// <returns></returns>
         public ShoppingCart UpdateProduct(int shoppingCartId, int productId, int quantity)
         {
-            var shoppingCart = _repositoryService.GetShoppingCartRepository().FirstOrDefault(x => x.ShoppingCartId == shoppingCartId);
-            if (shoppingCart == null) return null;
-
-            var product = _repositoryService.GetProductRepository().FirstOrDefault(x => x.ProductId == productId);
-            if (product == null) return null;
-
-            //If product is already in the shopping cart
-            if (shoppingCart.Items.Any(x => x.ProductId == product.ProductId))
+            try
             {
-                var item = shoppingCart.Items.Single(x => x.ProductId == product.ProductId);
-                item.Quantity += quantity;
-                //If the item quantity is 0 or negative we remove it from the shoppingCart
-                if (item.Quantity <= 0) shoppingCart.Items.Remove(item);
-            }
-            else
-                shoppingCart.Items.Add(new LineItem() { ProductId = product.ProductId, Quantity = quantity });
+                var shoppingCart = _repositoryService.GetShoppingCart(shoppingCartId);
+                var product = _repositoryService.GetProduct(productId);
 
-            return shoppingCart;
+                //If product is already in the shopping cart
+                if (shoppingCart.Items.Any(x => x.ProductId == product.ProductId))
+                {
+                    var item = shoppingCart.Items.Single(x => x.ProductId == product.ProductId);
+                    item.Quantity += quantity;
+                    //If the item quantity is 0 or negative we remove it from the shoppingCart
+                    if (item.Quantity <= 0) shoppingCart.Items.Remove(item);
+                }
+                else
+                    shoppingCart.Items.Add(new LineItem() { ProductId = product.ProductId, Quantity = quantity });
+
+                return shoppingCart;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public bool CanUserBuyShoppingCart(int shoppingCartId, int userId)
         {
-            var shoppingCart = _repositoryService.GetShoppingCartRepository().FirstOrDefault(x => x.ShoppingCartId == shoppingCartId);
-            if (shoppingCart == null) return false;
+            try
+            {
+                var shoppingCart = _repositoryService.GetShoppingCart(shoppingCartId);
+                
+                var customer = _customerService.GetCustomer(userId);
 
-            var customer = _customerService.GetCustomer(userId);
-
-            if (customer.AccountBalance - shoppingCart.TotalCost > customer.LoyaltyNegativeBalance)
-                return true;
-
+                if (customer.AccountBalance - shoppingCart.TotalCost > customer.LoyaltyNegativeBalance)
+                    return true;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
             return false;
         }
 
         public ShoppingCart BuyShoppingCart(int shoppingCartId, int customerId)
         {
-            var shoppingCart = _repositoryService.GetShoppingCartRepository().FirstOrDefault(x => x.ShoppingCartId == shoppingCartId);
-            if (shoppingCart == null) return null;
-
-            var customer = _customerService.GetCustomer(customerId);
-
-            if (customer.AccountBalance - shoppingCart.TotalCost > customer.LoyaltyNegativeBalance)
+            try
             {
-                var order = _orderService.CreateOrder(customerId, shoppingCart);
-                _customerService.UpdateCustomer(customerId, order);
-                EmptyShoppingCartOnPurchase(shoppingCart);
-                _orderService.SendOrderMessage(order);
+                var shoppingCart = _repositoryService.GetShoppingCart(shoppingCartId);
+
+                var customer = _customerService.GetCustomer(customerId);
+
+                if (customer.AccountBalance - shoppingCart.TotalCost > customer.LoyaltyNegativeBalance)
+                {
+                    var order = _orderService.CreateOrder(customerId, shoppingCart);
+                    _customerService.UpdateBalance(customerId, order);
+                    EmptyShoppingCartOnPurchase(ref shoppingCart);
+                    _orderService.SendOrderMessage(order);
+
+                    return shoppingCart;
+                }
+            }
+            catch (Exception ex)
+            {
+                // The controller should get the error and return it
+                throw;
             }
             return null;
         }
 
-        private void EmptyShoppingCartOnPurchase(ShoppingCart shoppingCart)
+        private void EmptyShoppingCartOnPurchase(ref ShoppingCart shoppingCart)
         {
             shoppingCart.Items.Clear();
             _repositoryService.UpdateShoppingCartRepository(shoppingCart);

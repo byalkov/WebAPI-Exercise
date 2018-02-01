@@ -111,5 +111,25 @@ namespace Strata_WebAPI_Exercise.Services
         {
             messages.Add(message);
         }
+
+        public ShoppingCart GetShoppingCart(int shoppingCartId)
+        {
+            var index = shoppingCarts.FindIndex(x => x.ShoppingCartId == shoppingCartId);
+            if (index < 0) throw new KeyNotFoundException();
+            return shoppingCarts[index];
+        }
+
+        public Customer GetCustomer(int id)
+        {
+            var index = customers.FindIndex(x => x.CustomerId == id);
+            if (index < 0) throw new KeyNotFoundException();
+            return customers[index];
+        }
+        public Product GetProduct(int productId)
+        {
+            var index = GetProductRepository().FindIndex(x => x.ProductId == productId);
+            if (index < 0) throw new KeyNotFoundException();
+            return GetProductRepository()[index];
+        }
     }
 }
