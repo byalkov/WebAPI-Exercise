@@ -25,8 +25,7 @@ namespace Strata_WebAPI_Exercise.Services
                 Status = Status.AwaitingDespatch,
 
             };
-
-            throw new NotImplementedException();
+            return order;
         }
 
         /// <summary>

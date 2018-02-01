@@ -12,14 +12,13 @@ namespace Strata_WebAPI_Exercise.Controllers
 {
     [Authorize]
     [RoutePrefix("api/shoppingCart")]
-    public class ShoppingCartController : ApiController
+    public class ShoppingCartController : BaseAPIController
     {
         private readonly IShoppingCartService _shoppingCartService;
-        private readonly ICustomerService _customerService;
-        public ShoppingCartController(IShoppingCartService shoppingCartService, ICustomerService customerService)
+        
+        public ShoppingCartController(IShoppingCartService shoppingCartService, ICustomerService customerService):base(customerService)
         {
             _shoppingCartService = shoppingCartService;
-            _customerService = customerService;
         }
 
         /// <summary>
@@ -33,7 +32,7 @@ namespace Strata_WebAPI_Exercise.Controllers
 
             if (!userId.HasValue)
             {
-                return BadRequest();
+                return BadRequest("Can't identify client, can't proceed with purchase.");
             }
 
             var res = _shoppingCartService.GetShoppingCart(userId.Value);

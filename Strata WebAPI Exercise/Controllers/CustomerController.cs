@@ -12,12 +12,10 @@ namespace Strata_WebAPI_Exercise.Controllers
 {
     [Authorize]
     [RoutePrefix("api/customer")]
-    public class CustomerController : ApiController
+    public class CustomerController : BaseAPIController
     {
-        private readonly ICustomerService customerService;
-        public CustomerController(ICustomerService customerService)
+        public CustomerController(ICustomerService customerService) : base(customerService)
         {
-            this.customerService = customerService;
         }
 
         /// <summary>
@@ -28,7 +26,7 @@ namespace Strata_WebAPI_Exercise.Controllers
         public IHttpActionResult GetCustomer()
         {
             // Get the userId from the claims token
-            var userId = customerService.GetClaimsUserId(ClaimsPrincipal.Current);
+            var userId = _customerService.GetClaimsUserId(ClaimsPrincipal.Current);
 
             if (!userId.HasValue)
             {
@@ -36,7 +34,7 @@ namespace Strata_WebAPI_Exercise.Controllers
             }
             try
             {
-                var res = customerService.GetCustomer(userId.Value);
+                var res = _customerService.GetCustomer(userId.Value);
                 if (res == null) return NotFound();
                 return Ok(res);
             }
@@ -57,7 +55,7 @@ namespace Strata_WebAPI_Exercise.Controllers
         {
             try
             {
-                var res = customerService.GetCustomer(id);
+                var res = _customerService.GetCustomer(id);
                 if (res == null) return NotFound();
                 return Ok(res);
             }
