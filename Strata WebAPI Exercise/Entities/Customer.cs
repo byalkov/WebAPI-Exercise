@@ -7,12 +7,14 @@ namespace Strata_WebAPI_Exercise.Entities
         public int CustomerId { get; set; }
         public double AccountBalance { get; set; }
 
-        public double LoyaltyNegativeBalance {
-            get {
+        public double LoyaltyNegativeBalance
+        {
+            get
+            {
                 return -Loyalty.CategoryThreshold;
             }
         }
-        public int LoyaltyId { get; set; }        
+        public int LoyaltyId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }

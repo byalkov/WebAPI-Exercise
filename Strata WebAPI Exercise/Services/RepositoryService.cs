@@ -101,9 +101,10 @@ namespace Strata_WebAPI_Exercise.Services
             return orders;
         }
 
-        public void UpdateCustomerRepository(Customer customer)
+        public void UpdateCustomer(Customer customer)
         {
             var index = customers.FindIndex(x => x.CustomerId == customer.CustomerId);
+            if (index < 0) throw new KeyNotFoundException();
             customers[index] = customer;
         }
 

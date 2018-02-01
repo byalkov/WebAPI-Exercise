@@ -35,15 +35,29 @@ namespace Strata_WebAPI_Exercise.Services
         /// <returns></returns>
         public Customer GetCustomer(int id)
         {
-            var res = _repositoryService.GetCustomerRepository().FirstOrDefault(x => x.CustomerId == id);
-            return res;
+            try
+            {
+                var res = _repositoryService.GetCustomer(id);
+                return res;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
-        public void UpdateBalance(int userId, double newBalance)
+        public void UpdateBalance(int userId, Order order)
         {
-            var res = _repositoryService.GetCustomerRepository().FirstOrDefault(x => x.CustomerId == userId);
-            res.AccountBalance = newBalance;
-            _repositoryService.UpdateCustomerRepository(res);
+            try
+            {
+                var res = _repositoryService.GetCustomer(userId);
+                res.AccountBalance -= order.TotalCost;
+                _repositoryService.UpdateCustomer(res);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

@@ -34,10 +34,16 @@ namespace Strata_WebAPI_Exercise.Controllers
             {
                 return BadRequest();
             }
-
-            var res = customerService.GetCustomer(userId.Value);
-            if (res == null) return NotFound();
-            return Ok(res);
+            try
+            {
+                var res = customerService.GetCustomer(userId.Value);
+                if (res == null) return NotFound();
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex.InnerException);
+            }
         }
 
         /// <summary>
@@ -49,9 +55,16 @@ namespace Strata_WebAPI_Exercise.Controllers
         [Route("{id:int}")]
         public IHttpActionResult GetCustomer(int id)
         {
-            var res = customerService.GetCustomer(id);
-            if (res == null) return NotFound();
-            return Ok(res);
+            try
+            {
+                var res = customerService.GetCustomer(id);
+                if (res == null) return NotFound();
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex.InnerException);
+            }
         }
     }
 }
