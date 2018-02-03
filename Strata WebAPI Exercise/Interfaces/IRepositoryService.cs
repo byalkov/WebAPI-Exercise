@@ -22,5 +22,6 @@ namespace Strata_WebAPI_Exercise.Interfaces
         void UpdateCustomer(Customer res);
         void SaveMessage(Message message);
 
+        void AddOrder(Order order);
     }
 }

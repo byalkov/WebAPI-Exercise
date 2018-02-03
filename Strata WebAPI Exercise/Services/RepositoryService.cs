@@ -109,6 +109,12 @@ namespace Strata_WebAPI_Exercise.Services
             customers[index] = customer;
         }
 
+        public void AddOrder(Order order)
+        {
+            order.OrderId = orders.Count + 1;
+            orders.Add(order);
+        }
+
         public void SaveMessage(Message message)
         {
             messages.Add(message);

@@ -20,11 +20,13 @@ namespace Strata_WebAPI_Exercise.Services
             var order = new Order()
             {
                 CustomerId = customer.CustomerId,
+                Customer = customer,
                 DeliveryAddress = customer.Address,
                 DeliveryCost = 0,
                 Status = Status.AwaitingDispatch,
-
+                OrderLineItems = new List<LineItem>(shoppingCart.Items)
             };
+            _repositoryService.AddOrder(order);
             return order;
         }
 
@@ -84,7 +86,7 @@ namespace Strata_WebAPI_Exercise.Services
         public void SendOrderMessage(Order order)
         {
             var estimatedDispatchDate = order.EstimatedDispatchDate.ToString("dd/MM/yyyy");
-            var messageBody = "Order #{order.OrderId} - Estimated dispatch {estimatedDispatchDate}\n";
+            var messageBody = string.Format("Order #{0} - Estimated dispatch {1}\n", order.OrderId, estimatedDispatchDate);
             foreach (var item in order.OrderLineItems)
             {
                 messageBody += item.Product.Name + " x" + item.Quantity + " = £" + item.Product.Price + "\n";
