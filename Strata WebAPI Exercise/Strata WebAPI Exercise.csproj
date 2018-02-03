@@ -164,6 +164,7 @@
     <Compile Include="Interfaces\IOrderService.cs" />
     <Compile Include="Interfaces\IRepositoryService.cs" />
     <Compile Include="Interfaces\IShoppingCartService.cs" />
+    <Compile Include="Mappings\MapEntityToDto.cs" />
     <Compile Include="Models\DTO\CustomerDTO.cs" />
     <Compile Include="Models\DTO\LineItemDTO.cs" />
     <Compile Include="Models\DTO\OrderDTO.cs" />

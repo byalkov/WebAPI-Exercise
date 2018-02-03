@@ -11,7 +11,7 @@ namespace Strata_WebAPI_Exercise.Entities
         {
             get
             {
-                return -Loyalty.CategoryThreshold;
+                return -Loyalty.ExtraCredit;
             }
         }
         public int LoyaltyId { get; set; }

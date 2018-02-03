@@ -1,4 +1,7 @@
-﻿using System.Web.Http;
+﻿using AutoMapper;
+using AutoMapper.Configuration;
+using Strata_WebAPI_Exercise.Mappings;
+using System.Web.Http;
 
 namespace Strata_WebAPI_Exercise
 {
@@ -11,6 +14,10 @@ namespace Strata_WebAPI_Exercise
             //Avoid self refernce loop errors in JSON serialisation
             var config = GlobalConfiguration.Configuration;
             config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            var cfg = new MapperConfigurationExpression();
+            
+            cfg.AddProfile<MapEntityToDto>();
+            Mapper.Initialize(cfg);
         }
     }
 }

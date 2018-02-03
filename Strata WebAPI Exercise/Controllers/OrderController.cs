@@ -1,5 +1,7 @@
-﻿using Strata_WebAPI_Exercise.Entities;
+﻿using AutoMapper;
+using Strata_WebAPI_Exercise.Entities;
 using Strata_WebAPI_Exercise.Interfaces;
+using Strata_WebAPI_Exercise.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +35,9 @@ namespace Strata_WebAPI_Exercise.Controllers
 
             var res = _orderService.GetOrder(userId.Value, orderId);
             if (res == null) return NotFound();
-            return Ok(res);
+
+            var dto = Mapper.Map<OrderDTO>(res);
+            return Ok(dto);
         }
 
         [HttpGet]
@@ -49,7 +53,8 @@ namespace Strata_WebAPI_Exercise.Controllers
 
             var res = _orderService.GetOrders(userId.Value, startDate, endDate);
             if (res == null) return NotFound();
-            return Ok(res);
+            var dto = Mapper.Map<OrderDTO>(res);
+            return Ok(dto);
         }
 
         [HttpGet]
@@ -63,9 +68,10 @@ namespace Strata_WebAPI_Exercise.Controllers
                 return BadRequest("Can't identify client, can't proceed with purchase.");
             }
 
-            var res = _orderService.GetOrders(userId.Value, Status.AwaitingDespatch);
+            var res = _orderService.GetOrders(userId.Value, Status.AwaitingDispatch);
             if (res == null) return NotFound();
-            return Ok(res);
+            var dto = Mapper.Map<OrderDTO>(res);
+            return Ok(dto);
         }
     }
 }

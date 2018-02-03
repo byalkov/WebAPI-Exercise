@@ -1,5 +1,7 @@
-﻿using Strata_WebAPI_Exercise.Entities;
+﻿using AutoMapper;
+using Strata_WebAPI_Exercise.Entities;
 using Strata_WebAPI_Exercise.Interfaces;
+using Strata_WebAPI_Exercise.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +17,8 @@ namespace Strata_WebAPI_Exercise.Controllers
     public class ShoppingCartController : BaseAPIController
     {
         private readonly IShoppingCartService _shoppingCartService;
-        
-        public ShoppingCartController(IShoppingCartService shoppingCartService, ICustomerService customerService):base(customerService)
+
+        public ShoppingCartController(IShoppingCartService shoppingCartService, ICustomerService customerService) : base(customerService)
         {
             _shoppingCartService = shoppingCartService;
         }
@@ -37,7 +39,9 @@ namespace Strata_WebAPI_Exercise.Controllers
 
             var res = _shoppingCartService.GetShoppingCart(userId.Value);
             if (res == null) return NotFound();
-            return Ok(res);
+
+            var dto = Mapper.Map<ShoppingCartDTO>(res);
+            return Ok(dto);
         }
 
         /// <summary>
@@ -60,7 +64,8 @@ namespace Strata_WebAPI_Exercise.Controllers
 
                 shoppingCart = _shoppingCartService.UpdateProduct(shoppingCart.ShoppingCartId, productId, quantity);
 
-                return Ok(shoppingCart);
+                var dto = Mapper.Map<ShoppingCartDTO>(shoppingCart);
+                return Ok(dto);
             }
             catch (Exception ex)
             {
@@ -87,7 +92,8 @@ namespace Strata_WebAPI_Exercise.Controllers
                     return BadRequest("Insufficient account balance, can't proceed with purchase.");
 
                 shoppingCart = _shoppingCartService.BuyShoppingCart(shoppingCart.ShoppingCartId, userId.Value);
-                return Ok(shoppingCart);
+                var dto = Mapper.Map<ShoppingCartDTO>(shoppingCart);
+                return Ok(dto);
             }
             catch (Exception ex)
             {

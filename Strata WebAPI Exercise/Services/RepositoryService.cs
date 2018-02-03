@@ -26,14 +26,14 @@ namespace Strata_WebAPI_Exercise.Services
              };
 
             orders = new List<Order>() {
-                new Order(){    OrderId = 1, CustomerId = 1, Customer=GetCustomerRepository()[0], DeliveryAddress="", Status = Status.Despatched,
+                new Order(){    OrderId = 1, CustomerId = 1, Customer=GetCustomerRepository()[0], DeliveryAddress="", Status = Status.Dispatched,
                     OrderLineItems = new List<LineItem>()
                     {
                         new LineItem() { ProductId= 1, Product=GetProductRepository()[0], Quantity=1 },
                         new LineItem() { ProductId= 2, Product=GetProductRepository()[1], Quantity=2 }
                     }
                 },
-                new Order(){    OrderId = 2, CustomerId = 1, Customer=GetCustomerRepository()[0], DeliveryAddress="", Status = Status.AwaitingDespatch,
+                new Order(){    OrderId = 2, CustomerId = 1, Customer=GetCustomerRepository()[0], DeliveryAddress="", Status = Status.AwaitingDispatch,
                     OrderLineItems = new List<LineItem>()
                     {
                         new LineItem() { ProductId= 1, Product=GetProductRepository()[0], Quantity=1 },

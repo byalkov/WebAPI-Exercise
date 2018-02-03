@@ -21,7 +21,7 @@ namespace Strata_WebAPI_Exercise.Entities
         {
             get
             {
-                return (Items.Sum(x => x.Product.Price * x.Quantity) * Customer.Loyalty.DicountPercentage ?? 1);
+                return (Items.Sum(x => x.Product.Price * x.Quantity) * (Customer.Loyalty.DicountPercentage ?? 1));
             }
         }
     }

@@ -8,5 +8,6 @@ Assumptions:
 - Security model is simplified and no roles based security model is needed.
 - Documenting the API Endpoints with Swagger is out of scope.
 - Exception handling for invalid requests is out of scope.
+- Using External Ids in DTO objects is out of scope
 
 Other assumptions included as comments where relevant. 

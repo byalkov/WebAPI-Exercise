@@ -1,5 +1,7 @@
-﻿using Strata_WebAPI_Exercise.Entities;
+﻿using AutoMapper;
+using Strata_WebAPI_Exercise.Entities;
 using Strata_WebAPI_Exercise.Interfaces;
+using Strata_WebAPI_Exercise.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +38,8 @@ namespace Strata_WebAPI_Exercise.Controllers
             {
                 var res = _customerService.GetCustomer(userId.Value);
                 if (res == null) return NotFound();
-                return Ok(res);
+                var dto = Mapper.Map<CustomerDTO>(res);
+                return Ok(dto);
             }
             catch (Exception ex)
             {
@@ -57,7 +60,8 @@ namespace Strata_WebAPI_Exercise.Controllers
             {
                 var res = _customerService.GetCustomer(id);
                 if (res == null) return NotFound();
-                return Ok(res);
+                var dto = Mapper.Map<CustomerDTO>(res);
+                return Ok(dto);
             }
             catch (Exception ex)
             {
