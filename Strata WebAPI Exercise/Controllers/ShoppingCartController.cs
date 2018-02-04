@@ -45,12 +45,13 @@ namespace Strata_WebAPI_Exercise.Controllers
         }
 
         /// <summary>
+        /// This endpoint allows for adding the items in the shoppingCart.
         /// Assuming customers are only allowed to update products to their own shopping cart.
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [Route("update/{productId:int}/{quantity:int?}")]
-        public IHttpActionResult UpdateProduct(int productId, int quantity = 1)
+        [Route("add/{productId:int}/{quantity:int?}")]
+        public IHttpActionResult AddProduct(int productId, int quantity = 1)
         {
             var userId = _customerService.GetClaimsUserId(ClaimsPrincipal.Current);
 
@@ -60,10 +61,7 @@ namespace Strata_WebAPI_Exercise.Controllers
             }
             try
             {
-                var shoppingCart = _shoppingCartService.GetShoppingCart(userId.Value);
-
-                shoppingCart = _shoppingCartService.UpdateProduct(shoppingCart.ShoppingCartId, productId, quantity);
-
+                var shoppingCart = addEditProduct(userId.Value, productId, quantity);
                 var dto = Mapper.Map<ShoppingCartDTO>(shoppingCart);
                 return Ok(dto);
             }
@@ -73,6 +71,35 @@ namespace Strata_WebAPI_Exercise.Controllers
                 return InternalServerError(ex.InnerException);
             }
         }
+
+        /// <summary>
+        /// This endpoint allows for updating/removing the items in the shoppingCart withtout the need of separate endpoints.
+        /// Assuming customers are only allowed to update products to their own shopping cart.
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("update/{productId:int}/{quantity:int}")]
+        public IHttpActionResult EditProductQuantity(int productId, int quantity)
+        {
+            var userId = _customerService.GetClaimsUserId(ClaimsPrincipal.Current);
+
+            if (!userId.HasValue)
+            {
+                return BadRequest("Can't identify client, can't proceed with purchase.");
+            }
+            try
+            {
+                var shoppingCart = addEditProduct(userId.Value, productId, quantity);
+                var dto = Mapper.Map<ShoppingCartDTO>(shoppingCart);
+                return Ok(dto);
+            }
+            catch (Exception ex)
+            {
+                // return the error
+                return InternalServerError(ex.InnerException);
+            }
+        }
+
 
         [HttpPost]
         [Route("buy")]
@@ -99,6 +126,21 @@ namespace Strata_WebAPI_Exercise.Controllers
             {
                 // return the error
                 return InternalServerError(ex.InnerException);
+            }
+        }
+
+
+        private ShoppingCart addEditProduct(int userId, int productId, int quantity)
+        {
+            try
+            {
+                var shoppingCart = _shoppingCartService.GetShoppingCart(userId);
+                shoppingCart = _shoppingCartService.UpdateProduct(shoppingCart.ShoppingCartId, productId, quantity);
+                return shoppingCart;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }

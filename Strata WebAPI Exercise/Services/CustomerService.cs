@@ -42,7 +42,7 @@ namespace Strata_WebAPI_Exercise.Services
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -56,7 +56,7 @@ namespace Strata_WebAPI_Exercise.Services
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
     }

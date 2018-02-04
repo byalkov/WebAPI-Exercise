@@ -27,7 +27,8 @@ namespace Strata_WebAPI_Exercise.Services
         }
 
         /// <summary>
-        /// Update the shopping cart with a product
+        /// Update the shopping cart with a product with positive or negative quantity.
+        /// Having multiple execution paths breaks the Single Responsibility pattern but it is used for brevity
         /// </summary>
         /// <param name="shoppingCartId"></param>
         /// <param name="productId"></param>
@@ -49,13 +50,18 @@ namespace Strata_WebAPI_Exercise.Services
                     if (item.Quantity <= 0) shoppingCart.Items.Remove(item);
                 }
                 else
-                    shoppingCart.Items.Add(new LineItem() { ProductId = product.ProductId, Quantity = quantity });
+                {
+                    if (quantity > 0)
+                        shoppingCart.Items.Add(new LineItem() { ProductId = product.ProductId, Quantity = quantity });
+                    else
+                        throw new InvalidOperationException("Can't add negative quantity to a new line item.");
+                }
 
                 return shoppingCart;
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -64,7 +70,7 @@ namespace Strata_WebAPI_Exercise.Services
             try
             {
                 var shoppingCart = _repositoryService.GetShoppingCart(shoppingCartId);
-                
+
                 var customer = _customerService.GetCustomer(userId);
 
                 if (customer.AccountBalance - shoppingCart.TotalCost > customer.LoyaltyNegativeBalance)
@@ -72,7 +78,7 @@ namespace Strata_WebAPI_Exercise.Services
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
             return false;
         }
@@ -85,6 +91,7 @@ namespace Strata_WebAPI_Exercise.Services
 
                 var customer = _customerService.GetCustomer(customerId);
 
+                //double check that the user has enough balance
                 if (customer.AccountBalance - shoppingCart.TotalCost > customer.LoyaltyNegativeBalance)
                 {
                     var order = _orderService.CreateOrder(customerId, shoppingCart);
@@ -98,7 +105,7 @@ namespace Strata_WebAPI_Exercise.Services
             catch (Exception ex)
             {
                 // The controller should get the error and return it
-                throw;
+                throw ex;
             }
             return null;
         }
