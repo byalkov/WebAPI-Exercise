@@ -83,7 +83,7 @@ namespace Strata_WebAPI_Exercise.Tests
         {
             var res = shoppingCartService.GetShoppingCart(mockShoppingCart.ShoppingCartId);
 
-            Assert.That(mockShoppingCart, Is.EqualTo(res));
+            Assert.AreEqual(mockShoppingCart.ShoppingCartId, res.ShoppingCartId);
         }
 
         [Test]

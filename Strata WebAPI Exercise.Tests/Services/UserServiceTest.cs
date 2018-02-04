@@ -36,7 +36,7 @@ namespace Strata_WebAPI_Exercise.Tests
         public void ValidateExistingUserExists()
         {
             var res = userService.ValidateUser(mockCustomer.Email, mockCustomer.Password);
-            Assert.That(mockCustomer, Is.EqualTo(res));
+            Assert.AreEqual(mockCustomer.CustomerId, res.CustomerId);
         }
 
         [Test]
