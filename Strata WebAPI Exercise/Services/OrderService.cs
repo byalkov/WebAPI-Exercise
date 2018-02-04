@@ -16,18 +16,25 @@ namespace Strata_WebAPI_Exercise.Services
 
         public Order CreateOrder(int customerId, ShoppingCart shoppingCart)
         {
-            var customer = _customerService.GetCustomer(customerId);
-            var order = new Order()
+            try
             {
-                CustomerId = customer.CustomerId,
-                Customer = customer,
-                DeliveryAddress = customer.Address,
-                DeliveryCost = 0,
-                Status = Status.AwaitingDispatch,
-                OrderLineItems = new List<LineItem>(shoppingCart.Items)
-            };
-            _repositoryService.AddOrder(order);
-            return order;
+                var customer = _customerService.GetCustomer(customerId);
+                var order = new Order()
+                {
+                    CustomerId = customer.CustomerId,
+                    Customer = customer,
+                    DeliveryAddress = customer.Address,
+                    DeliveryCost = 0,
+                    Status = Status.AwaitingDispatch,
+                    OrderLineItems = new List<LineItem>(shoppingCart.Items)
+                };
+                _repositoryService.AddOrder(order);
+                return order;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -80,7 +87,7 @@ namespace Strata_WebAPI_Exercise.Services
 
         /// <summary>
         /// Generate message from Order
-        /// Assume that the message needs to be stored in the db and it will be sent by a downstream service (out of scope) 
+        /// Assume that the message needs to be stored in the db and it will be sent by a downstream service (which is out of scope) 
         /// </summary>
         /// <param name="order"></param>
         public void SendOrderMessage(Order order)

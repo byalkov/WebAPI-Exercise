@@ -61,7 +61,7 @@ namespace Strata_WebAPI_Exercise.Controllers
             }
             try
             {
-                var shoppingCart = addEditProduct(userId.Value, productId, quantity);
+                var shoppingCart = AddEditProduct(userId.Value, productId, quantity);
                 var dto = Mapper.Map<ShoppingCartDTO>(shoppingCart);
                 return Ok(dto);
             }
@@ -89,7 +89,7 @@ namespace Strata_WebAPI_Exercise.Controllers
             }
             try
             {
-                var shoppingCart = addEditProduct(userId.Value, productId, quantity);
+                var shoppingCart = AddEditProduct(userId.Value, productId, quantity);
                 var dto = Mapper.Map<ShoppingCartDTO>(shoppingCart);
                 return Ok(dto);
             }
@@ -130,7 +130,7 @@ namespace Strata_WebAPI_Exercise.Controllers
         }
 
 
-        private ShoppingCart addEditProduct(int userId, int productId, int quantity)
+        private ShoppingCart AddEditProduct(int userId, int productId, int quantity)
         {
             try
             {

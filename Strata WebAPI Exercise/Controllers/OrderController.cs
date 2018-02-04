@@ -58,7 +58,7 @@ namespace Strata_WebAPI_Exercise.Controllers
         }
 
         [HttpGet]
-        [Route("{awaiting}")]
+        [Route("awaiting")]
         public IHttpActionResult GetOrdersAwaitingDispatch()
         {
             var userId = _customerService.GetClaimsUserId(ClaimsPrincipal.Current);
